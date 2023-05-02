@@ -58,20 +58,22 @@ sequenceDiagram
     Factory ViewModel-->>Factory ViewModel: Handle Data
     Factory ViewModel-->>Acitivity: Observer(Live Data)
 ~~~   
-# Feature
-본 프로젝트는 상용화된 제품으로 모든 코드를 공개할 수 없습니다.<br>
-그러나, 로그인 과정부터 메인 화면까지의 처리 과정을 간략히 보여드립니다.<br>
-이 부분은 프로젝트의 전체적인 흐름을 이해하는 데 도움이 될 수 있습니다.
 
-#### Intro 화면
+# UI 
+### Intro 화면
 <img src="https://user-images.githubusercontent.com/10841533/235601302-695a7fca-3251-4deb-b996-3c0082f5d8eb.jpg" width="220" height="500"/>
 
-#### 선생님 화면
+### 선생님 화면
 <div><img src="https://user-images.githubusercontent.com/10841533/235601318-cb7fa4d2-1362-4bee-803c-a5393eabee95.jpg" width="220" height="500"/>
 <img src="https://user-images.githubusercontent.com/10841533/235601323-2490f0e8-7749-48ee-899a-235f8072f215.jpg" width="220" height="500"/>
 <img src="https://user-images.githubusercontent.com/10841533/235601334-606ecc0b-0ec9-4df9-a8d6-bb97819fe63b.jpg" width="220" height="500"/></div>
 
-#### 학생 화면
+### 학생 화면
 <div><img src="https://user-images.githubusercontent.com/10841533/235601340-a465f02e-20c2-4bb9-9dc6-ec6adcee9c47.jpg" width="220" height="500"/>
 <img src="https://user-images.githubusercontent.com/10841533/235601346-aadde140-c70c-4e44-9428-d142eb9460b3.jpg" width="220" height="500"/>
 <img src="https://user-images.githubusercontent.com/10841533/235601353-2f1cf1b0-794c-43fa-adbe-cd6551bf59be.jpg" width="220" height="500"/></div>
+
+# Feature
+본 프로젝트는 상용화된 제품으로 모든 코드를 공개할 수 없습니다.<br>
+그러나, 로그인 과정부터 메인 화면까지의 처리 과정을 간략히 보여드립니다.<br>
+이 부분은 프로젝트의 전체적인 흐름을 이해하는 데 도움이 될 수 있습니다.
