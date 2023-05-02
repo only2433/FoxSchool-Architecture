@@ -9,6 +9,21 @@
 교사는 숙제 검사와 점수 부여를 편리하게 처리할 수 있다.
 
 # Architecture
+이 앱은 **MVVM** 구조로 개발되어 있으며, **View**는 **Activity**가, <br>
+**ViewModel**은 **FactoryViewModel**과 **ApiViewModel**로 나누어져 있습니다.<br>
+**Model**은 **Data Class**와 **Response Class**로 구성되어 있습니다.
+
+    FactoryViewModel은 View와 ApiViewModel 사이에서 중개 역할을 수행합니다.
+    View에서 발생한 이벤트에 대한 처리를 직접 구현하고, 그 결과를 LiveData Event로 전달합니다.
+    이때, View의 이벤트가 Api 통신을 요청하는 경우, FactoryViewModel은 ApiViewModel에 요청하고,
+    ApiViewModel은 Service 클래스를 통해 데이터를 처리합니다.
+
+    ApiViewModel은 받은 데이터를 StateFlow를 통해 FactoryViewModel에 전달합니다.
+    FactoryViewModel은 이 데이터를 처리하고, 결과를 View에게 알려줍니다.
+    이러한 구조를 통해 View와 비즈니스 로직을 분리하고, 코드의 재사용성과 유지보수성을 높일 수 있습니다.
+
+    또한, LiveData와 StateFlow를 사용하여 데이터의 변경을 감지하고, 화면에 실시간으로 반영할 수 있습니다.
+    이를 통해 사용자에게 빠르고 정확한 정보를 제공할 수 있습니다.
 ~~~ mermaid
 flowchart LR
   subgraph View
@@ -19,7 +34,7 @@ flowchart LR
   C(Api ViewModel)
   end
   
-	 A(Activity)-- Event --> B(Factory ViewModel)
+   A(Activity)-- Event --> B(Factory ViewModel)
    B(Factory ViewModel) -. Observer .-> A(Activity)
    B(Factory ViewModel) -- Server Request --> C(Api ViewModel)
    C(Api ViewModel) -. Observer .-> B(Factory ViewModel)
@@ -39,7 +54,7 @@ sequenceDiagram
     Factory ViewModel->>Api ViewModel: Request Data 
     Api ViewModel->>Service: Communicate Server
     Service-->>Api ViewModel: Response Data
-    Api ViewModel-->Factory ViewModel: Observer(State Flow)
+    Api ViewModel-->>Factory ViewModel: Observer(State Flow)
     Factory ViewModel-->>Factory ViewModel: Handle Data
     Factory ViewModel-->>Acitivity: Observer(Live Data)
 
