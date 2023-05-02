@@ -57,4 +57,8 @@ sequenceDiagram
     Api ViewModel-->>Factory ViewModel: Observer(State Flow)
     Factory ViewModel-->>Factory ViewModel: Handle Data
     Factory ViewModel-->>Acitivity: Observer(Live Data)
-
+~~~   
+# Feature
+본 프로젝트는 상용화된 제품으로 모든 코드를 공개할 수 없습니다.<br>
+그러나, 로그인 과정부터 메인 화면까지의 처리 과정을 간략히 보여드립니다.<br>
+이 부분은 프로젝트의 전체적인 흐름을 이해하는 데 도움이 될 수 있습니다.
