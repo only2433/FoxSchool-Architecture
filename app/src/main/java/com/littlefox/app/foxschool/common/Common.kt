@@ -49,7 +49,6 @@ class Common
         const val API_RECORD_HISTORY : String       = API_CONTENTS + "record/history"
         const val API_FLASHCARD_SAVE : String       = API_CONTENTS + "flashcard"
 
-
         const val BASE_WEBVIEW_URL  : String                = BASE_URL + "web/"
         const val URL_LEARNING_LOG : String                 = BASE_WEBVIEW_URL + "studylog/history"
         const val URL_FAQS : String                         = BASE_WEBVIEW_URL + "help/faq/list"
