@@ -1,8 +1,6 @@
 package com.littlefox.app.foxschool.api.viewmodel.factory
 
-import android.app.Activity
 import android.content.Context
-import android.os.Message
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -10,46 +8,27 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LoadState
 import com.littlefox.app.foxschool.R
-import com.littlefox.app.foxschool.adapter.DetailListItemAdapter
 import com.littlefox.app.foxschool.adapter.SearchListItemPagingAdapter
-import com.littlefox.app.foxschool.adapter.listener.DetailItemListener
 import com.littlefox.app.foxschool.adapter.listener.SearchItemListener
 import com.littlefox.app.foxschool.api.base.BaseFactoryViewModel
 import com.littlefox.app.foxschool.api.enumerate.RequestCode
 import com.littlefox.app.foxschool.api.viewmodel.api.SearchApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
-import com.littlefox.app.foxschool.coroutine.BookshelfContentAddCoroutine
-import com.littlefox.app.foxschool.coroutine.SearchListCoroutine
-import com.littlefox.app.foxschool.dialog.BottomBookAddDialog
-import com.littlefox.app.foxschool.dialog.BottomContentItemOptionDialog
-import com.littlefox.app.foxschool.dialog.TemplateAlertDialog
-import com.littlefox.app.foxschool.enumerate.ActivityMode
-import com.littlefox.app.foxschool.enumerate.AnimationMode
-import com.littlefox.app.foxschool.enumerate.VocabularyType
-import com.littlefox.app.foxschool.main.contract.SearchListContract
-import com.littlefox.app.foxschool.main.presenter.SearchListPresenter
+
+
 import com.littlefox.app.foxschool.management.IntentManagementFactory
-import com.littlefox.app.foxschool.`object`.data.flashcard.FlashcardDataObject
-import com.littlefox.app.foxschool.`object`.data.player.PlayerIntentParamsObject
-import com.littlefox.app.foxschool.`object`.data.quiz.QuizIntentParamsObject
-import com.littlefox.app.foxschool.`object`.data.record.RecordIntentParamsObject
-import com.littlefox.app.foxschool.`object`.data.webview.WebviewIntentParamsObject
-import com.littlefox.app.foxschool.`object`.result.BookshelfBaseObject
+
 import com.littlefox.app.foxschool.`object`.result.content.ContentsBaseResult
 import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
 import com.littlefox.app.foxschool.`object`.result.main.MyBookshelfResult
-import com.littlefox.app.foxschool.`object`.result.main.MyVocabularyResult
 import com.littlefox.app.foxschool.`object`.result.search.SearchListResult
-import com.littlefox.app.foxschool.`object`.result.search.paging.ContentBasePagingResult
 import com.littlefox.app.foxschool.observer.MainObserver
-import com.littlefox.app.foxschool.viewmodel.base.SingleLiveEvent
+import com.littlefox.app.foxschool.viewmodel.SingleLiveEvent
 import com.littlefox.library.system.handler.WeakReferenceHandler
-import com.littlefox.library.system.handler.callback.MessageHandlerCallback
 import com.littlefox.logmonitor.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
@@ -79,9 +58,14 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
     private val _dialogRecordPermission = SingleLiveEvent<Void>()
     val dialogRecordPermission: LiveData<Void> get() = _dialogRecordPermission
 
+    companion object
+    {
+        const val DIALOG_TYPE_WARNING_RECORD_PERMISSION : Int   = 10001
+    }
+
 
     private lateinit var mContext : Context
-    private lateinit var mSearchListContractView : SearchListContract.View
+
     private var mCurrentSearchListBaseResult : SearchListResult? = null
     private val mSearchItemList : ArrayList<ContentsBaseResult> = ArrayList<ContentsBaseResult>()
     private var mCurrentBookshelfAddResult : MyBookshelfResult? = null
@@ -268,145 +252,6 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
         }
     }
 
-    /** ====================== StartActivity ====================== */
-    private fun startCurrentSelectMovieActivity()
-    {
-        mCurrentSelectItem?.let { item ->
-            Log.f("Movie ID : " + item.getID())
-            val sendItemList = ArrayList<ContentsBaseResult>()
-            sendItemList.add(item)
-            val playerParamsObject = PlayerIntentParamsObject(sendItemList)
-
-            IntentManagementFactory.getInstance().readyActivityMode(ActivityMode.PLAYER)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .setData(playerParamsObject)
-                .startActivity()
-        }
-
-    }
-
-    private fun startQuizActivity()
-    {
-        mCurrentSelectItem?.let { item ->
-            Log.f("Quiz ID : " + item.getID())
-            val quizIntentParamsObject : QuizIntentParamsObject = QuizIntentParamsObject(item.getID())
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.QUIZ)
-                .setData(quizIntentParamsObject)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-
-    }
-
-    private fun startOriginTranslateActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.WEBVIEW_ORIGIN_TRANSLATE)
-                .setData(item.getID())
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-
-    }
-
-    private fun startEbookActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val data : WebviewIntentParamsObject = WebviewIntentParamsObject(item.getID())
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.WEBVIEW_EBOOK)
-                .setData(data)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-
-    }
-
-    private fun startVocabularyActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val title = item.getVocabularyName()
-            val myVocabularyResult = MyVocabularyResult(
-                item.getID(),
-                title,
-                VocabularyType.VOCABULARY_CONTENTS)
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.VOCABULARY)
-                .setData(myVocabularyResult)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-    }
-
-    private fun startGameStarwordsActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val data : WebviewIntentParamsObject = WebviewIntentParamsObject(item.getID())
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.WEBVIEW_GAME_STARWORDS)
-                .setData(data)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-    }
-
-    private fun startGameCrosswordActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val data : WebviewIntentParamsObject = WebviewIntentParamsObject(item.getID())
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.WEBVIEW_GAME_CROSSWORD)
-                .setData(data)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-    }
-
-    private fun startFlashcardActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val data = FlashcardDataObject(
-                item.getID(),
-                item.getName(),
-                item.getSubName(),
-                VocabularyType.VOCABULARY_CONTENTS
-            )
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.FLASHCARD)
-                .setData(data)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-    }
-
-    private fun startRecordPlayerActivity()
-    {
-        Log.f("")
-        mCurrentSelectItem?.let { item ->
-            val recordIntentParamsObject = RecordIntentParamsObject(item)
-
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.RECORD_PLAYER)
-                .setData(recordIntentParamsObject)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-    }
-
-
     fun onClickSearchType(type: String)
     {
         if(mCurrentSearchType == type)
@@ -434,7 +279,7 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
         Log.f("keyword : $keyword")
         if(keyword.trim().length < 2)
         {
-            mSearchListContractView.showErrorMessage(mContext.resources.getString(R.string.message_warning_search_input_2_or_more))
+            _errorMessage.value = mContext.resources.getString(R.string.message_warning_search_input_2_or_more)
             return
         }
         clearData()
@@ -445,90 +290,41 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
     fun onClickQuizButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startQuizActivity()
-        }
     }
 
     fun onClickTranslateButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startOriginTranslateActivity()
-        }
     }
 
     fun onClickVocabularyButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startVocabularyActivity()
-        }
     }
 
     fun onClickAddBookshelfButton()
     {
         Log.f("")
-        mCurrentSelectItem?.let { item ->
-            mSendBookshelfAddList.clear()
-            mSendBookshelfAddList.add(item)
-            _dialogBottomBookshelfContentAdd.value = mMainInformationResult.getBookShelvesList()
-        }
-       // mBottomContentItemOptionDialog.dismiss()
-      //  mMainHandler.sendEmptyMessageDelayed(SearchListPresenter.MESSAGE_SHOW_BOOKSHELF_ADD_ITEM_DIALOG, Common.DURATION_SHORT)
     }
 
      fun onClickEbookButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startEbookActivity()
-        }
     }
 
     fun onClickStarwordsButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startGameStarwordsActivity()
-        }
     }
 
     fun onClickCrosswordButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startGameCrosswordActivity()
-        }
     }
 
     fun onClickFlashcardButton()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            startFlashcardActivity()
-        }
     }
 
     fun onClickRecordPlayerButton()
@@ -540,25 +336,11 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
         }
         else
         {
-            viewModelScope.launch(Dispatchers.Main) {
-                withContext(Dispatchers.IO){
-                    delay(Common.DURATION_SHORT)
-                }
-                startRecordPlayerActivity()
-            }
         }
     }
 
     fun onDialogAddBookshelfClick(index : Int)
     {
-        mCurrentBookshelfAddResult = mMainInformationResult.getBookShelvesList()[index]
-        Log.f("Add Item : " + mCurrentBookshelfAddResult!!.getName())
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            requestBookshelfContentsAddAsync(mSendBookshelfAddList)
-        }
     }
 
 
@@ -567,15 +349,11 @@ class SearchFactoryViewModel @Inject constructor(private val apiViewModel : Sear
         override fun onItemClickThumbnail(item : ContentsBaseResult)
         {
             Log.f("index : ${item.getID()}")
-            mCurrentSelectItem = item
-            startCurrentSelectMovieActivity()
         }
 
         override fun onItemClickOption(item : ContentsBaseResult)
         {
             Log.f("index : ${item.getID()}")
-            mCurrentSelectItem = item
-            _dialogBottomOption.value = item
         }
     }
 

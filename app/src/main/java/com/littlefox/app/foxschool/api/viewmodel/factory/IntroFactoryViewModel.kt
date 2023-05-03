@@ -30,7 +30,7 @@ import com.littlefox.app.foxschool.common.NetworkUtil
 import com.littlefox.app.foxschool.enc.SimpleCrypto
 import com.littlefox.app.foxschool.enumerate.*
 import com.littlefox.app.foxschool.management.IntentManagementFactory
-import com.littlefox.app.foxschool.viewmodel.base.SingleLiveEvent
+import com.littlefox.app.foxschool.viewmodel.SingleLiveEvent
 import com.littlefox.logmonitor.Log
 import com.littlefox.logmonitor.enumItem.MonitorMode
 import dagger.hilt.android.lifecycle.HiltViewModel

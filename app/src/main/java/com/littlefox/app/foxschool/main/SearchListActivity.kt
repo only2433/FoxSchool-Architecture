@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.graphics.Rect
 import android.os.Bundle
-import android.os.Message
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -13,20 +12,13 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.annotation.Nullable
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
-import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import butterknife.*
 import butterknife.OnClick
 import com.littlefox.app.foxschool.R
-import com.littlefox.app.foxschool.adapter.DetailListItemAdapter
 import com.littlefox.app.foxschool.adapter.SearchListItemPagingAdapter
-import com.littlefox.app.foxschool.api.viewmodel.factory.PlayerFactoryViewModel
 import com.littlefox.app.foxschool.api.viewmodel.factory.SearchFactoryViewModel
 import com.littlefox.app.foxschool.base.BaseActivity
 import com.littlefox.app.foxschool.common.Common
@@ -39,14 +31,10 @@ import com.littlefox.app.foxschool.dialog.listener.BookAddListener
 import com.littlefox.app.foxschool.dialog.listener.DialogListener
 import com.littlefox.app.foxschool.dialog.listener.ItemOptionListener
 import com.littlefox.app.foxschool.enumerate.DialogButtonType
-import com.littlefox.app.foxschool.main.contract.SearchListContract
-import com.littlefox.app.foxschool.main.presenter.SearchListPresenter
 import com.littlefox.app.foxschool.`object`.result.content.ContentsBaseResult
 import com.littlefox.app.foxschool.`object`.result.main.MyBookshelfResult
 
-import com.littlefox.library.system.handler.callback.MessageHandlerCallback
 import com.littlefox.library.view.dialog.MaterialLoadingDialog
-import com.littlefox.library.view.scroller.FixedSpeedScroller
 import com.littlefox.library.view.scroller.SmoothListviewScroller
 import com.littlefox.logmonitor.Log
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
@@ -314,7 +302,7 @@ class SearchListActivity : BaseActivity()
     {
         mTemplateAlertDialog = TemplateAlertDialog(this).apply {
             setMessage(resources.getString(R.string.message_record_permission))
-            setDialogEventType(PlayerFactoryViewModel.DIALOG_TYPE_WARNING_RECORD_PERMISSION)
+            setDialogEventType(SearchFactoryViewModel.DIALOG_TYPE_WARNING_RECORD_PERMISSION)
             setButtonType(DialogButtonType.BUTTON_2)
             setButtonText(
                 resources.getString(R.string.text_cancel),

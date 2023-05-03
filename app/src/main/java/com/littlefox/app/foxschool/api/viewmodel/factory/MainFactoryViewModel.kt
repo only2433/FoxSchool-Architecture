@@ -5,16 +5,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import com.littlefox.app.foxschool.R
 import com.littlefox.app.foxschool.`object`.data.bookshelf.ManagementBooksData
 import com.littlefox.app.foxschool.`object`.data.iac.AwakeItemData
 import com.littlefox.app.foxschool.`object`.result.login.LoginInformationResult
 import com.littlefox.app.foxschool.`object`.result.main.InAppCompaignResult
 import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
-import com.littlefox.app.foxschool.`object`.result.main.MyBookshelfResult
-import com.littlefox.app.foxschool.`object`.result.main.MyVocabularyResult
-import com.littlefox.app.foxschool.`object`.result.story.SeriesBaseResult
 import com.littlefox.app.foxschool.`object`.result.story.SeriesInformationResult
 import com.littlefox.app.foxschool.adapter.MainFragmentSelectionPagerAdapter
 import com.littlefox.app.foxschool.api.base.BaseFactoryViewModel
@@ -22,19 +17,13 @@ import com.littlefox.app.foxschool.api.viewmodel.api.MainApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.enumerate.*
-import com.littlefox.app.foxschool.fragment.MainMyBooksFragment
-import com.littlefox.app.foxschool.fragment.MainSongFragment
-import com.littlefox.app.foxschool.fragment.MainStoryFragment
+import com.littlefox.app.foxschool.fragment.MainTestFragment
 import com.littlefox.app.foxschool.iac.IACController
 import com.littlefox.app.foxschool.management.IntentManagementFactory
 import com.littlefox.app.foxschool.observer.MainObserver
-import com.littlefox.app.foxschool.viewmodel.base.SingleLiveEvent
+import com.littlefox.app.foxschool.viewmodel.SingleLiveEvent
 import com.littlefox.logmonitor.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,9 +92,10 @@ class MainFactoryViewModel @Inject constructor(private val apiViewModel : MainAp
         mLoginInformationResult = CommonUtils.getInstance(mContext).getPreferenceObject(Common.PARAMS_USER_API_INFORMATION, LoginInformationResult::class.java) as LoginInformationResult?
 
         mMainFragmentSelectionPagerAdapter = MainFragmentSelectionPagerAdapter((mContext as AppCompatActivity).getSupportFragmentManager())
-        mMainFragmentSelectionPagerAdapter.addFragment(MainStoryFragment.instance)
-        mMainFragmentSelectionPagerAdapter.addFragment(MainSongFragment.instance)
-        mMainFragmentSelectionPagerAdapter.addFragment(MainMyBooksFragment.instance)
+        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("동화"))
+        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("동요"))
+        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("책장/단어장"))
+
         mFragmentList = mMainFragmentSelectionPagerAdapter.pagerFragmentList
 
         _settingViewPager.value = mMainFragmentSelectionPagerAdapter
@@ -294,165 +284,51 @@ class MainFactoryViewModel @Inject constructor(private val apiViewModel : MainAp
     fun onClickMenuMyInformation()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.MY_INFORMATION)
-                .setData("N")
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION).startActivity()
-        }
     }
 
     fun onClickMenuLearningLog()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.WEBVIEW_LEARNING_LOG)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-
     }
 
     fun onClickRecordHistory()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.RECORD_HISTORY)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
     }
 
     fun onClickMenuHomeworkManage()
     {
         Log.f("")
-        if (CommonUtils.getInstance(mContext).isTeacherMode == false)
-        {
-            // 학생
-            if(mLoginInformationResult!!.getSchoolInformation().isHaveClass())
-            {
-                // 학급정보 있는 경우 화면 이동
-                viewModelScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO){
-                        delay(Common.DURATION_SHORT)
-                    }
-                    IntentManagementFactory.getInstance()
-                        .readyActivityMode(ActivityMode.HOMEWORK_MANAGE)
-                        .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                        .startActivity()
-                }
-            }
-            else
-            {
-                _showNoClassStudentDialog.call()
-            }
-        }
-        else
-        {
-            // 선생님
-            if(mLoginInformationResult!!.getUserInformation().isHaveClass())
-            {
-                // 학급정보 있는 경우 화면 이동
-                viewModelScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO){
-                        delay(Common.DURATION_SHORT)
-                    }
-                    IntentManagementFactory.getInstance()
-                        .readyActivityMode(ActivityMode.HOMEWORK_MANAGE)
-                        .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                        .startActivity()
-                }
-            }
-            else
-            {
-                _showNoClassTeacherDialog.call()
-            }
-        }
     }
 
     fun onClickFoxschoolNews()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.FOXSCHOOL_NEWS)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
     }
 
     fun onClickMenuFAQ()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.FAQS)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
     }
 
     fun onClickMenu1On1Ask()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.INQUIRE)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
     }
 
     fun onClickMenuAppUseGuide()
     {
         Log.f("")
-        viewModelScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO){
-                delay(Common.DURATION_SHORT)
-            }
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.APP_USE_GUIDE)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
     }
 
     fun onClickMenuTeacherManual()
     {
         Log.f("")
-        CommonUtils.getInstance(mContext).downloadFileToExternalPublicDir(
-            mMainInformationResult.getFileInformation()!!.getTeacherManualLink(),
-            Common.FILE_TEACHER_MANUAL
-        )
     }
 
     fun onClickMenuHomeNewsPaper()
     {
         Log.f("")
-        CommonUtils.getInstance(mContext).downloadFileToExternalPublicDir(
-            mMainInformationResult.getFileInformation()!!.getHomeNewsPaperLink(),
-            Common.FILE_HOME_NEWSPAPER
-        )
     }
 
     fun onClickSearch()
@@ -468,154 +344,47 @@ class MainFactoryViewModel @Inject constructor(private val apiViewModel : MainAp
     fun onClickStoryLevelsItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick StoryLevelsItem")
-        val pair = androidx.core.util.Pair<View, String>(
-            selectView,
-            Common.STORY_DETAIL_LIST_HEADER_IMAGE
-        )
-
-        seriesInformationResult.setTransitionType(TransitionType.PAIR_IMAGE)
-        seriesInformationResult.setSeriesType(Common.CONTENT_TYPE_STORY)
-        IntentManagementFactory.getInstance()
-            .readyActivityMode(ActivityMode.SERIES_DETAIL_LIST)
-            .setData(seriesInformationResult as SeriesBaseResult)
-            .setViewPair(pair)
-            .setAnimationMode(AnimationMode.METERIAL_ANIMATION)
-            .startActivity()
     }
 
     fun onClickStoryCategoriesItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick StoryCategoryItem")
-        val pair = androidx.core.util.Pair<View, String>(
-            selectView,
-            Common.CATEGORY_DETAIL_LIST_HEADER_IMAGE
-        )
-
-        seriesInformationResult.setTransitionType(TransitionType.PAIR_IMAGE)
-        IntentManagementFactory.getInstance()
-            .readyActivityMode(ActivityMode.STORY_CATEGORY_LIST)
-            .setData(seriesInformationResult as SeriesBaseResult)
-            .setViewPair(pair)
-            .setAnimationMode(AnimationMode.METERIAL_ANIMATION)
-            .startActivity()
     }
 
     /** =============== [동요 Fragment] 이벤트 =============== */
     fun onClickSongCategoriesItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick SongCategoriesItem")
-        val pair = androidx.core.util.Pair<View, String>(
-            selectView,
-            Common.STORY_DETAIL_LIST_HEADER_IMAGE
-        )
-        seriesInformationResult.setTransitionType(TransitionType.PAIR_IMAGE)
-        seriesInformationResult.setSeriesType(Common.CONTENT_TYPE_SONG)
-        IntentManagementFactory.getInstance()
-            .readyActivityMode(ActivityMode.SERIES_DETAIL_LIST)
-            .setData(seriesInformationResult as SeriesBaseResult)
-            .setViewPair(pair).setAnimationMode(AnimationMode.METERIAL_ANIMATION)
-            .startActivity()
     }
 
     /** =============== [책장 Fragment] 이벤트 =============== */
     fun onAddBookshelf()
     {
         Log.f("onAddBookshelf")
-        if(mMainInformationResult.getBookShelvesList().size > Common.MAX_BOOKSHELF_SIZE)
-        {
-            _errorMessage.value = mContext.resources.getString(R.string.message_maximum_bookshelf)
-        }
-        else
-        {
-            mManagementBooksData = ManagementBooksData(MyBooksType.BOOKSHELF_ADD)
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.MANAGEMENT_MYBOOKS)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .setData(mManagementBooksData)
-                .startActivity()
-        }
     }
 
     fun onAddVocabulary()
     {
         Log.f("onAddVocabulary")
-        if(mMainInformationResult.getVocabulariesList().size > Common.MAX_VOCABULARY_SIZE)
-        {
-            _errorMessage.value = mContext.resources.getString(R.string.message_maximum_vocabulary)
-        }
-        else
-        {
-            mManagementBooksData = ManagementBooksData(MyBooksType.VOCABULARY_ADD)
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.MANAGEMENT_MYBOOKS)
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .setData(mManagementBooksData).startActivity()
-        }
     }
 
     fun onSettingBookshelf(index : Int)
     {
         Log.f("onSettingBookshelf : $index")
-        val data : MyBookshelfResult = mMainInformationResult.getBookShelvesList().get(index)
-        Log.f("ID : " + data.getID().toString() + ", Name : " + data.getName().toString() + ", Color : " + data.getColor())
-        mManagementBooksData = ManagementBooksData(data.getID(), data.getName(), data.getColor(), MyBooksType.BOOKSHELF_MODIFY)
-        IntentManagementFactory.getInstance()
-            .readyActivityMode(ActivityMode.MANAGEMENT_MYBOOKS)
-            .setData(mManagementBooksData)
-            .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-            .startActivity()
     }
 
     fun onSettingVocabulary(index : Int)
     {
         Log.f("onSettingVocabulary : $index")
-        val data : MyVocabularyResult =
-            mMainInformationResult.getVocabulariesList().get(index)
-        Log.f("ID : " + data.getID().toString() + ", Name : " + data.getName().toString() + ", Color : " + data.getColor())
-        mManagementBooksData = ManagementBooksData(data.getID(), data.getName(), data.getColor(), MyBooksType.VOCABULARY_MODIFY)
-        IntentManagementFactory.getInstance()
-            .readyActivityMode(ActivityMode.MANAGEMENT_MYBOOKS)
-            .setData(mManagementBooksData)
-            .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-            .startActivity()
     }
 
     fun onEnterBookshelfList(index : Int)
     {
         Log.f("onEnterBookshelfList : $index")
-        if(mMainInformationResult.getBookShelvesList().get(index).getContentsCount() > 0)
-        {
-            Log.f("Enter Bookshelf : " + mMainInformationResult.getBookShelvesList().get(index).getName())
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.BOOKSHELF)
-                .setData(mMainInformationResult.getBookShelvesList().get(index))
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        }
-        else
-        {
-            Log.f("Empty Bookshelf")
-            _errorMessage.value = mContext.resources.getString(R.string.message_empty_bookshelf_contents)
-        }
     }
 
     fun onEnterVocabularyList(index : Int)
     {
         Log.f("onEnterVocabularyList : $index")
-        if(mMainInformationResult.getVocabulariesList().get(index).getWordCount() > 0)
-        {
-            Log.f("Enter Vocabulary : " + mMainInformationResult.getVocabulariesList().get(index).getName())
-            mMainInformationResult.getVocabulariesList().get(index)
-                .setVocabularyType(VocabularyType.VOCABULARY_SHELF)
-            IntentManagementFactory.getInstance()
-                .readyActivityMode(ActivityMode.VOCABULARY)
-                .setData(mMainInformationResult.getVocabulariesList().get(index))
-                .setAnimationMode(AnimationMode.NORMAL_ANIMATION)
-                .startActivity()
-        } else
-        {
-            Log.f("Empty Vocabulary")
-            _errorMessage.value = mContext.resources.getString(R.string.message_empty_vocabulary_contents)
-        }
     }
 }

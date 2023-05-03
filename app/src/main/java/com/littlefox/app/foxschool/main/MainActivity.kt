@@ -79,7 +79,7 @@ class MainActivity() : BaseActivity()
     lateinit var _MainTabsLayout : TabLayout
 
     @BindView(R.id._mainViewPager)
-    lateinit var _MainViewPager : SwipeDisableViewPager
+    lateinit var _MainViewPager : ViewPager
 
     @BindView(R.id._navigationBaseLayout)
     lateinit var _NavigationBaseLayout : RelativeLayout
@@ -154,7 +154,6 @@ class MainActivity() : BaseActivity()
     private lateinit var _SchoolNameText : TextView
     private lateinit var _SettingButton : ImageView
     private lateinit var _SearchButton : ImageView
-    private lateinit var mFixedSpeedScroller : FixedSpeedScroller
 
     private var mLoginInformationResult : LoginInformationResult? = null
     private lateinit var mMainInformationResult : MainInformationResult
@@ -254,7 +253,6 @@ class MainActivity() : BaseActivity()
     private fun initViewPager(mainFragmentSelectionPagerAdapter : MainFragmentSelectionPagerAdapter)
     {
         settingViewPagerInformation(mainFragmentSelectionPagerAdapter)
-        settingViewPagerController()
         if(CommonUtils.getInstance(this).checkTablet == false)
         {
             checkToolbarAnimationLayoutSize()
@@ -669,21 +667,6 @@ class MainActivity() : BaseActivity()
         _MainTabsLayout.setTabGravity(TabLayout.GRAVITY_FILL)
         _MainTabsLayout.setupWithViewPager(_MainViewPager)
         settingTabsLayout(mainFragmentSelectionPagerAdapter.getCount())
-    }
-
-    private fun settingViewPagerController()
-    {
-        mFixedSpeedScroller = FixedSpeedScroller(this, LinearOutSlowInInterpolator())
-        mFixedSpeedScroller.setDuration(Common.DURATION_NORMAL.toInt())
-        try
-        {
-            val scroller : Field = ViewPager::class.java.getDeclaredField("mScroller")
-            scroller.isAccessible = true
-            scroller[_MainViewPager] = mFixedSpeedScroller
-        } catch(e : Exception)
-        {
-            e.printStackTrace()
-        }
     }
 
     private fun settingToolbar()

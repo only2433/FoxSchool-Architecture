@@ -2,7 +2,6 @@ package com.littlefox.app.foxschool.api.di
 
 import com.littlefox.app.foxschool.api.ApiService
 import com.littlefox.app.foxschool.api.viewmodel.api.*
-import com.littlefox.app.foxschool.api.viewmodel.api.PlayerApiViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,56 +38,9 @@ object Injection
     }
 
     @Provides
-    fun providePlayerApiViewModel() : PlayerApiViewModel
-    {
-        return PlayerApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideQuizApiViewModel() : QuizApiViewModel
-    {
-        return QuizApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideFlashcardApiViewModel() : FlashcardApiViewModel
-    {
-        return FlashcardApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideBookshelfApiViewModel() : BookshelfApiViewModel
-    {
-        return BookshelfApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideForumApiViewModel() : ForumApiViewModel
-    {
-        return ForumApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
     fun provideSearchApiViewModel() : SearchApiViewModel
     {
         return SearchApiViewModel(provideFoxSchoolRepository())
     }
 
-    @Provides
-    fun provideStudentHomeworkApiViewModel() : StudentHomeworkApiViewModel
-    {
-        return StudentHomeworkApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideTeacherHomeworkApiViewModel() : TeacherHomeworkApiViewModel
-    {
-        return TeacherHomeworkApiViewModel(provideFoxSchoolRepository())
-    }
-
-    @Provides
-    fun provideTeacherHomeworkCheckingApiViewModel() : TeacherHomeworkCheckingApiViewModel
-    {
-        return TeacherHomeworkCheckingApiViewModel(provideFoxSchoolRepository())
-    }
 }

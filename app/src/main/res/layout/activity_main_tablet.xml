@@ -120,12 +120,12 @@
         </com.ssomai.android.scalablelayout.ScalableLayout>
 
 
-        <com.littlefox.library.view.extra.SwipeDisableViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/_mainViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/_mainBaseTabletToplayout"
-            app:swipeable="false" />
+             />
 
         </RelativeLayout>
 
