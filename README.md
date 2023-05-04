@@ -73,6 +73,11 @@ sequenceDiagram
 <img src="https://user-images.githubusercontent.com/10841533/235601346-aadde140-c70c-4e44-9428-d142eb9460b3.jpg" width="220" height="500"/>
 <img src="https://user-images.githubusercontent.com/10841533/235601353-2f1cf1b0-794c-43fa-adbe-cd6551bf59be.jpg" width="220" height="500"/></div>
 
+# TEST
+    테스트 학교 : 리틀팍스 초등학교
+    테스트 아이디 : Test5
+    비밀번호 : 1234
+
 # Feature
 본 프로젝트는 상용화된 제품으로 모든 코드를 공개할 수 없습니다.<br>
 그러나, 로그인 과정부터 메인 화면까지의 처리 과정을 간략히 보여드립니다.<br>
