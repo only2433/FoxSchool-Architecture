@@ -23,7 +23,7 @@ import butterknife.OnClick
 import com.littlefox.app.foxschool.R
 import com.littlefox.app.foxschool.`object`.data.login.UserLoginData
 import com.littlefox.app.foxschool.`object`.result.login.SchoolItemDataResult
-import com.littlefox.app.foxschool.api.viewmodel.factory.LoginFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.factory.LoginFactoryViewModel
 import com.littlefox.app.foxschool.base.BaseActivity
 import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.common.Font

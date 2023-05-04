@@ -1,4 +1,4 @@
-package com.littlefox.app.foxschool.api.viewmodel.factory
+package com.littlefox.app.foxschool.main.viewmodel.factory
 
 import android.content.Context
 import android.widget.Toast
@@ -10,9 +10,9 @@ import androidx.paging.LoadState
 import com.littlefox.app.foxschool.R
 import com.littlefox.app.foxschool.adapter.SearchListItemPagingAdapter
 import com.littlefox.app.foxschool.adapter.listener.SearchItemListener
-import com.littlefox.app.foxschool.api.base.BaseFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseFactoryViewModel
 import com.littlefox.app.foxschool.api.enumerate.RequestCode
-import com.littlefox.app.foxschool.api.viewmodel.api.SearchApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.SearchApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
 

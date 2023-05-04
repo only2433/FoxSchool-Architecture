@@ -1,4 +1,4 @@
-package com.littlefox.app.foxschool.api.base
+package com.littlefox.app.foxschool.main.viewmodel.base
 
 import androidx.lifecycle.ViewModel
 import com.littlefox.app.foxschool.api.data.QueueData

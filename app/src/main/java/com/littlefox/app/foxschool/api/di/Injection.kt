@@ -1,7 +1,10 @@
 package com.littlefox.app.foxschool.api.di
 
 import com.littlefox.app.foxschool.api.ApiService
-import com.littlefox.app.foxschool.api.viewmodel.api.*
+import com.littlefox.app.foxschool.main.viewmodel.api.IntroApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.LoginApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.MainApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.SearchApiViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

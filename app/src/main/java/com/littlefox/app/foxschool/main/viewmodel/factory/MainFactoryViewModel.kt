@@ -1,4 +1,4 @@
-package com.littlefox.app.foxschool.api.viewmodel.factory
+package com.littlefox.app.foxschool.main.viewmodel.factory
 
 import android.content.Context
 import android.view.View
@@ -12,8 +12,8 @@ import com.littlefox.app.foxschool.`object`.result.main.InAppCompaignResult
 import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
 import com.littlefox.app.foxschool.`object`.result.story.SeriesInformationResult
 import com.littlefox.app.foxschool.adapter.MainFragmentSelectionPagerAdapter
-import com.littlefox.app.foxschool.api.base.BaseFactoryViewModel
-import com.littlefox.app.foxschool.api.viewmodel.api.MainApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.MainApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.enumerate.*

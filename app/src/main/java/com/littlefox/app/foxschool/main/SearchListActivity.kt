@@ -19,7 +19,7 @@ import butterknife.*
 import butterknife.OnClick
 import com.littlefox.app.foxschool.R
 import com.littlefox.app.foxschool.adapter.SearchListItemPagingAdapter
-import com.littlefox.app.foxschool.api.viewmodel.factory.SearchFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.factory.SearchFactoryViewModel
 import com.littlefox.app.foxschool.base.BaseActivity
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils

@@ -1,8 +1,8 @@
-package com.littlefox.app.foxschool.api.viewmodel.api
+package com.littlefox.app.foxschool.main.viewmodel.api
 
 import androidx.lifecycle.viewModelScope
 import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
-import com.littlefox.app.foxschool.api.base.BaseApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseApiViewModel
 import com.littlefox.app.foxschool.api.data.QueueData
 import com.littlefox.app.foxschool.api.data.ResultData
 import com.littlefox.app.foxschool.api.di.FoxSchoolRepository

@@ -1,4 +1,4 @@
-package com.littlefox.app.foxschool.api.viewmodel.factory
+package com.littlefox.app.foxschool.main.viewmodel.factory
 
 import android.Manifest
 import android.content.Context
@@ -19,10 +19,10 @@ import com.littlefox.app.foxschool.`object`.data.login.UserLoginData
 import com.littlefox.app.foxschool.`object`.result.base.BaseResult
 import com.littlefox.app.foxschool.`object`.result.login.LoginInformationResult
 import com.littlefox.app.foxschool.`object`.result.version.VersionDataResult
-import com.littlefox.app.foxschool.api.base.BaseFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseFactoryViewModel
 import com.littlefox.app.foxschool.enumerate.IntroViewMode
 import com.littlefox.app.foxschool.api.enumerate.RequestCode
-import com.littlefox.app.foxschool.api.viewmodel.api.IntroApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.api.IntroApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.common.LittlefoxLocale

@@ -1,4 +1,4 @@
-package com.littlefox.app.foxschool.api.base
+package com.littlefox.app.foxschool.main.viewmodel.base
 
 import android.content.Context
 import android.content.Intent

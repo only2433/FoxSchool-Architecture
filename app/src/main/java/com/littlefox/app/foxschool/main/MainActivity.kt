@@ -23,7 +23,7 @@ import com.littlefox.app.foxschool.`object`.result.login.LoginInformationResult
 import com.littlefox.app.foxschool.`object`.result.main.InAppCompaignResult
 import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
 import com.littlefox.app.foxschool.adapter.MainFragmentSelectionPagerAdapter
-import com.littlefox.app.foxschool.api.viewmodel.factory.MainFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.factory.MainFactoryViewModel
 import com.littlefox.app.foxschool.base.BaseActivity
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils

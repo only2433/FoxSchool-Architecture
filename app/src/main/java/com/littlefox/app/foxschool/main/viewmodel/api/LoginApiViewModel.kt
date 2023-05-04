@@ -1,31 +1,27 @@
-package com.littlefox.app.foxschool.api.viewmodel.api
+package com.littlefox.app.foxschool.main.viewmodel.api
 
-import com.littlefox.app.foxschool.`object`.result.version.VersionDataResult
-import com.littlefox.app.foxschool.api.base.BaseApiViewModel
-import com.littlefox.app.foxschool.api.data.ResultData
-import com.littlefox.app.foxschool.api.di.FoxSchoolRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.littlefox.app.foxschool.`object`.result.login.LoginInformationResult
-import com.littlefox.app.foxschool.`object`.result.main.MainInformationResult
+import com.littlefox.app.foxschool.`object`.result.login.SchoolItemDataResult
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseApiViewModel
 import com.littlefox.app.foxschool.api.base.BaseResponse
 import com.littlefox.app.foxschool.api.data.QueueData
+import com.littlefox.app.foxschool.api.data.ResultData
+import com.littlefox.app.foxschool.api.di.FoxSchoolRepository
 import com.littlefox.app.foxschool.api.enumerate.RequestCode
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRepository) : BaseApiViewModel()
+class LoginApiViewModel @Inject constructor(private val repository : FoxSchoolRepository) : BaseApiViewModel()
 {
-    private val _versionData = MutableStateFlow<VersionDataResult?>(null)
-    val versionData : MutableStateFlow<VersionDataResult?> = _versionData
+    private val _schoolListData = MutableStateFlow<ArrayList<SchoolItemDataResult>?>(null)
+    val schoolListData : MutableStateFlow<ArrayList<SchoolItemDataResult>?> = _schoolListData
 
-    private val _authMeData = MutableStateFlow<LoginInformationResult?>(null)
-    val authMeData : MutableStateFlow<LoginInformationResult?> = _authMeData
-
-    private val _mainData = MutableStateFlow<MainInformationResult?>(null)
-    val mainData : MutableStateFlow<MainInformationResult?> = _mainData
+    private val _loginData = MutableStateFlow<LoginInformationResult?>(null)
+    val loginData : MutableStateFlow<LoginInformationResult?> = _loginData
 
     private val _changePasswordData = MutableStateFlow<BaseResponse<Nothing>?>(null)
     val changePasswordData : MutableStateFlow<BaseResponse<Nothing>?> = _changePasswordData
@@ -36,31 +32,30 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
     private val _changePasswordKeepData = MutableStateFlow<BaseResponse<Nothing>?>(null)
     val changePasswordKeepData : MutableStateFlow<BaseResponse<Nothing>?> = _changePasswordKeepData
 
-
-    private suspend fun getVersion(deviceID : String, pushAddress : String, pushOn : String)
+    private suspend fun getSchoolList()
     {
-        val result = repository.getVersion(deviceID, pushAddress, pushOn)
+        val result = repository.getSchoolList()
         withContext(Dispatchers.Main)
         {
             when(result)
             {
                 is ResultData.Success ->
                 {
-                    val data = result.data as VersionDataResult
-                    _versionData.value = data
+                    val data = result.data as ArrayList<SchoolItemDataResult>
+                    _schoolListData.value = data
                 }
                 is ResultData.Fail ->
                 {
-                    _errorReport.value = Pair(result, RequestCode.CODE_VERSION)
+                    _errorReport.value = Pair(result, RequestCode.CODE_SCHOOL_LIST)
                 }
             }
         }
         enqueueCommandEnd()
     }
 
-    private suspend fun getAuthMe()
+    private suspend fun login(id : String, password : String, schoolCode : String)
     {
-        val result = repository.getAuthMe()
+        val result = repository.login(id, password, schoolCode)
         withContext(Dispatchers.Main)
         {
             when(result)
@@ -68,37 +63,15 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
                 is ResultData.Success ->
                 {
                     val data = result.data as LoginInformationResult
-                    _authMeData.value = data
+                    _loginData.value = data
                 }
                 is ResultData.Fail ->
                 {
-                    _errorReport.value = Pair(result, RequestCode.CODE_AUTH_ME)
+                    _errorReport.value = Pair(result, RequestCode.CODE_LOGIN)
                 }
             }
         }
         enqueueCommandEnd()
-    }
-
-    private suspend fun getMain()
-    {
-        val result = repository.getMain()
-        withContext(Dispatchers.Main)
-        {
-            when(result)
-            {
-                is ResultData.Success ->
-                {
-                    val data = result.data as MainInformationResult
-                    _mainData.value = data
-                }
-                is ResultData.Fail ->
-                {
-                    _errorReport.value = Pair(result, RequestCode.CODE_MAIN)
-                }
-            }
-        }
-        enqueueCommandEnd()
-
     }
 
     private suspend fun changePassword(currentPassword: String, changePassword: String, changePasswordConfirm: String)
@@ -171,29 +144,22 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
         when(data.requestCode)
         {
-            RequestCode.CODE_VERSION ->
+            RequestCode.CODE_SCHOOL_LIST ->
             {
-                mJob = viewModelScope.launch(Dispatchers.IO) {
+                mJob = viewModelScope.launch (Dispatchers.IO) {
                     delay(data.duration)
-                    getVersion(
+                    getSchoolList()
+                }
+            }
+            RequestCode.CODE_LOGIN ->
+            {
+                mJob = viewModelScope.launch (Dispatchers.IO) {
+                    delay(data.duration)
+                    login(
                         data.objects[0] as String,
                         data.objects[1] as String,
                         data.objects[2] as String
                     )
-                }
-            }
-            RequestCode.CODE_AUTH_ME ->
-            {
-                mJob = viewModelScope.launch (Dispatchers.IO){
-                    delay(data.duration)
-                    getAuthMe()
-                }
-            }
-            RequestCode.CODE_MAIN ->
-            {
-                mJob = viewModelScope.launch (Dispatchers.IO) {
-                    delay(data.duration)
-                    getMain()
                 }
             }
             RequestCode.CODE_PASSWORD_CHANGE ->
@@ -223,5 +189,4 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
             }
         }
     }
-
 }

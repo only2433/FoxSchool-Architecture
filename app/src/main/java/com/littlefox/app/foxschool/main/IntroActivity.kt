@@ -29,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.littlefox.app.foxschool.enumerate.IntroViewMode
-import com.littlefox.app.foxschool.api.viewmodel.factory.IntroFactoryViewModel
+import com.littlefox.app.foxschool.main.viewmodel.factory.IntroFactoryViewModel
 import com.littlefox.app.foxschool.dialog.PasswordChangeDialog
 import com.littlefox.app.foxschool.dialog.TemplateAlertDialog
 import com.littlefox.app.foxschool.dialog.listener.DialogListener

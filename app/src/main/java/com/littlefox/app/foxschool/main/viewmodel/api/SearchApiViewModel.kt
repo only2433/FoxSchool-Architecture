@@ -1,9 +1,9 @@
-package com.littlefox.app.foxschool.api.viewmodel.api
+package com.littlefox.app.foxschool.main.viewmodel.api
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.littlefox.app.foxschool.api.base.BaseApiViewModel
+import com.littlefox.app.foxschool.main.viewmodel.base.BaseApiViewModel
 import com.littlefox.app.foxschool.api.data.QueueData
 import com.littlefox.app.foxschool.api.data.ResultData
 import com.littlefox.app.foxschool.api.di.FoxSchoolRepository
@@ -16,8 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.ArrayList
