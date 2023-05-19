@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.ArrayList
@@ -29,9 +30,7 @@ class SearchApiViewModel @Inject constructor(private val repository : FoxSchoolR
 
     private suspend fun addBookshelfContents(bookshelfID: String, contentsList: ArrayList<ContentsBaseResult>)
     {
-        val result = repository.addBookshelfContents(bookshelfID, contentsList)
-        withContext(Dispatchers.Main)
-        {
+        repository.addBookshelfContents(bookshelfID, contentsList).collect { result ->
             when(result)
             {
                 is ResultData.Success ->

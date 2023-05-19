@@ -10,6 +10,7 @@ import com.littlefox.app.foxschool.api.enumerate.RequestCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +21,7 @@ class MainApiViewModel @Inject constructor(private val repository : FoxSchoolRep
 
     private suspend fun getMain()
     {
-        val result = repository.getMain()
-        withContext(Dispatchers.Main)
-        {
+        repository.getMain().collect { result ->
             when(result)
             {
                 is ResultData.Success ->

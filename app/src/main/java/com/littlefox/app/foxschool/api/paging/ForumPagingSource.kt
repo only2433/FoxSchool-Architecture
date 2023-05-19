@@ -10,6 +10,7 @@ import com.littlefox.app.foxschool.api.base.safeApiCall
 import com.littlefox.app.foxschool.api.data.ResultData
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.logmonitor.Log
+import kotlinx.coroutines.flow.collect
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -17,44 +18,48 @@ class ForumPagingSource(private val service: ApiService) : PagingSource<Int, For
 {
     override suspend fun load(params : LoadParams<Int>) : LoadResult<Int, ForumBasePagingResult>
     {
-        return try
+        var result : LoadResult<Int, ForumBasePagingResult> = LoadResult.Error(Throwable("Unknown Error"))
+        try
         {
             val page = params.key ?: 1
             val pageSize = params.loadSize.coerceAtMost(Common.PAGE_LOAD_COUNT)
 
             Log.f("page : $page , pageSize : $pageSize")
-            when(val result = safeApiCall {service.forumPagingListAsync(pageSize, page)})
-            {
-                is ResultData.Success ->
+            safeApiCall {service.forumPagingListAsync(pageSize, page)}.collect {
+                when(it)
                 {
-                    val data = result.data as ForumBaseListPagingResult
-                    val totalPage = data.lastPageIndex
-                    val currentPage = data.currentPageIndex
+                    is ResultData.Success<*> ->
+                    {
+                        val data = it.data as ForumBaseListPagingResult
+                        val totalPage = data.lastPageIndex
+                        val currentPage = data.currentPageIndex
 
-                    LoadResult.Page(
-                        data = data.getNewsList() ?: ArrayList(),
-                        prevKey = if (page == 1) null else page - 1,
-                        nextKey = if (currentPage >= totalPage) null else page + 1
-                    )
-
-                }
-                is ResultData.Fail ->
-                {
-                    LoadResult.Error(Throwable(result.message))
-                }
-                else ->
-                {
-                    LoadResult.Error(Throwable("Unknown Error"))
+                        result = LoadResult.Page(
+                            data = data.getNewsList() ?: ArrayList(),
+                            prevKey = if (page == 1) null else page - 1,
+                            nextKey = if (currentPage >= totalPage) null else page + 1
+                        )
+                    }
+                    is ResultData.Fail ->
+                    {
+                        result = LoadResult.Error(Throwable(it.message))
+                    }
+                    else ->
+                    {
+                        result = LoadResult.Error(Throwable("Unknown Error"))
+                    }
                 }
             }
+
         }
         catch (exception: IOException)
         {
-            LoadResult.Error(exception)
+            result =  LoadResult.Error(exception)
         } catch (exception: HttpException)
         {
-            LoadResult.Error(exception)
+            result =  LoadResult.Error(exception)
         }
+        return result
     }
 
 

@@ -7,9 +7,11 @@ import com.littlefox.app.foxschool.api.base.safeApiCall
 import com.littlefox.app.foxschool.api.data.ResultData
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.`object`.result.forum.paging.ForumBaseListPagingResult
+import com.littlefox.app.foxschool.`object`.result.forum.paging.ForumBasePagingResult
 import com.littlefox.app.foxschool.`object`.result.search.paging.ContentBasePagingResult
 import com.littlefox.app.foxschool.`object`.result.search.paging.SearchListPagingResult
 import com.littlefox.logmonitor.Log
+import kotlinx.coroutines.flow.collect
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -20,13 +22,15 @@ class SearchPagingSource(
 {
     override suspend fun load(params : LoadParams<Int>) : LoadResult<Int, ContentBasePagingResult>
     {
-        return try
+        var result : LoadResult<Int, ContentBasePagingResult> = LoadResult.Error(Throwable("Unknown Error"))
+        try
         {
             val page = params.key ?: 1
             val pageSize = params.loadSize.coerceAtMost(Common.PAGE_LOAD_COUNT)
 
             Log.f("page : $page , pageSize : $pageSize")
-            when(val result = safeApiCall {
+
+            safeApiCall {
                 if(searchType.equals(""))
                 {
                     service.getSearchList(
@@ -42,39 +46,43 @@ class SearchPagingSource(
                         pageCount = pageSize,
                         currentPage = page)
                 }
-                })
-            {
-                is ResultData.Success ->
+            }.collect {
+                when(it)
                 {
-                    val data = result.data as SearchListPagingResult
-                    val totalPage = data.lastPageIndex
-                    val currentPage = data.currentPageIndex
+                    is ResultData.Success ->
+                    {
+                        val data = it.data as SearchListPagingResult
+                        val totalPage = data.lastPageIndex
+                        val currentPage = data.currentPageIndex
 
-                    LoadResult.Page(
-                        data = data.getSearchList() ?: ArrayList(),
-                        prevKey = if (page == 1) null else page - 1,
-                        nextKey = if (currentPage >= totalPage) null else page + 1
-                    )
+                        result = LoadResult.Page(
+                            data = data.getSearchList() ?: ArrayList(),
+                            prevKey = if (page == 1) null else page - 1,
+                            nextKey = if (currentPage >= totalPage) null else page + 1
+                        )
 
-                }
-                is ResultData.Fail ->
-                {
-                    Log.f("------------- sdljasdlkjaslkjdklasjd")
-                    LoadResult.Error(Throwable(result.message))
-                }
-                else ->
-                {
-                    LoadResult.Error(Throwable("Unknown Error"))
+                    }
+                    is ResultData.Fail ->
+                    {
+                        Log.f("------------- sdljasdlkjaslkjdklasjd")
+                        result = LoadResult.Error(Throwable(it.message))
+                    }
+                    else ->
+                    {
+                        result = LoadResult.Error(Throwable("Unknown Error"))
+                    }
                 }
             }
+
         }
         catch (exception: IOException)
         {
-            LoadResult.Error(exception)
+            result = LoadResult.Error(exception)
         } catch (exception: HttpException)
         {
-            LoadResult.Error(exception)
+            result = LoadResult.Error(exception)
         }
+        return result
     }
 
     override fun getRefreshKey(state : PagingState<Int, ContentBasePagingResult>) : Int?

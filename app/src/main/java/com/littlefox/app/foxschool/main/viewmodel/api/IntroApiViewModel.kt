@@ -13,6 +13,7 @@ import com.littlefox.app.foxschool.api.data.QueueData
 import com.littlefox.app.foxschool.api.enumerate.RequestCode
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,9 +40,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun getVersion(deviceID : String, pushAddress : String, pushOn : String)
     {
-        val result = repository.getVersion(deviceID, pushAddress, pushOn)
-        withContext(Dispatchers.Main)
-        {
+        repository.getVersion(deviceID, pushAddress, pushOn).collect { result ->
             when(result)
             {
                 is ResultData.Success ->
@@ -60,9 +59,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun getAuthMe()
     {
-        val result = repository.getAuthMe()
-        withContext(Dispatchers.Main)
-        {
+        repository.getAuthMe().collect { result ->
             when(result)
             {
                 is ResultData.Success ->
@@ -81,9 +78,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun getMain()
     {
-        val result = repository.getMain()
-        withContext(Dispatchers.Main)
-        {
+        repository.getMain().collect { result ->
             when(result)
             {
                 is ResultData.Success ->
@@ -103,9 +98,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun changePassword(currentPassword: String, changePassword: String, changePasswordConfirm: String)
     {
-        val result = repository.setChangePassword(currentPassword, changePassword, changePasswordConfirm)
-        withContext(Dispatchers.Main)
-        {
+        repository.setChangePassword(currentPassword, changePassword, changePasswordConfirm).collect { result ->
             when(result)
             {
                 is ResultData.Success ->
@@ -124,9 +117,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun changePasswordToDoNext()
     {
-        val result = repository.setChangePasswordToDoNext()
-        withContext(Dispatchers.Main)
-        {
+        repository.setChangePasswordToDoNext().collect { result ->
             when(result)
             {
                 is ResultData.Success ->
@@ -146,9 +137,7 @@ class IntroApiViewModel @Inject constructor(private val repository : FoxSchoolRe
 
     private suspend fun changePasswordToKeep()
     {
-        val result = repository.setChangePasswordToKeep()
-        withContext(Dispatchers.Main)
-        {
+        repository.setChangePasswordToKeep().collect { result ->
             when(result)
             {
                 is ResultData.Success ->

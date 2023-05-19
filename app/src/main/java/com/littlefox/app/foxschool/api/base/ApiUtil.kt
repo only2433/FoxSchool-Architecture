@@ -5,6 +5,10 @@ import com.littlefox.app.foxschool.api.data.ResultData
 import com.littlefox.app.foxschool.base.MainApplication
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.logmonitor.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -12,8 +16,7 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>) : ResultData<T>?
-{
+suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>) : Flow<ResultData<T>?> = flow {
     var result: ResultData<T>? = null
     try
     {
@@ -73,8 +76,9 @@ suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>) : ResultData<
         e.printStackTrace()
         result = ResultData.Fail(Common.FAIL_CODE_INTERNAL_SERVER_ERROR,e.message ?: "Internet error runs")
     }
-    return result
-}
+    emit(result)
+}.flowOn(Dispatchers.IO)
+
 
 fun getNetworkErrorJson() : String
 {
