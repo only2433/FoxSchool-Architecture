@@ -64,7 +64,6 @@ class SearchPagingSource(
                     }
                     is ResultData.Fail ->
                     {
-                        Log.f("------------- sdljasdlkjaslkjdklasjd")
                         result = LoadResult.Error(Throwable(it.message))
                     }
                     else ->

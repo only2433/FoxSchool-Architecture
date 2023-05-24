@@ -120,11 +120,14 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
 
     override fun onBindViewHolder(holder : ViewHolder, position : Int)
     {
-        if(mIndexColor.equals("") == false)
-        {
-            holder._ContentIndexText.setTextColor(Color.parseColor(mIndexColor))
-            holder._ContentIndexText.setText(java.lang.String.valueOf(mDataList[position].getIndex()))
+        holder._ContentIndexText?.let {
+            if(mIndexColor.equals("") == false)
+            {
+                it.setTextColor(Color.parseColor(mIndexColor))
+                it.setText(java.lang.String.valueOf(mDataList[position].getIndex()))
+            }
         }
+
         if(isFullName)
         {
             holder._ContentTitleText.setText(mDataList[position].getContentsName())
@@ -191,19 +194,21 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
 
         if(CommonUtils.getInstance(mContext).checkTablet == false)
         {
-            if(isBottomViewDisable)
-            {
-                holder._BottomLogoLayout.setVisibility(View.GONE)
-            }
-            else
-            {
-                if(position == mDataList.size - 1)
+            holder._BottomLogoLayout?.let {
+                if(isBottomViewDisable)
                 {
-                    holder._BottomLogoLayout.setVisibility(View.VISIBLE)
+                    it.setVisibility(View.GONE)
                 }
                 else
                 {
-                    holder._BottomLogoLayout.setVisibility(View.GONE)
+                    if(position == mDataList.size - 1)
+                    {
+                        it.setVisibility(View.VISIBLE)
+                    }
+                    else
+                    {
+                        it.setVisibility(View.GONE)
+                    }
                 }
             }
         }
@@ -268,9 +273,9 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
 
     inner class ViewHolder : RecyclerView.ViewHolder
     {
-        @Nullable
+        @JvmField
         @BindView(R.id._bottomLogoLayout)
-        lateinit var _BottomLogoLayout : ScalableLayout
+        var _BottomLogoLayout : ScalableLayout? = null
 
         @BindView(R.id._backgroundImage)
         lateinit var _BackgroundImage : ImageView
@@ -284,9 +289,9 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
         @BindView(R.id._studiedCheckIcon)
         lateinit var _StudiedCheckIcon : ImageView
 
-        @Nullable
+        @JvmField
         @BindView(R.id._contentIndexText)
-        lateinit var _ContentIndexText : TextView
+        var _ContentIndexText : TextView? = null
 
         @BindView(R.id._contentTitleText)
         lateinit var _ContentTitleText : TextView
@@ -294,9 +299,9 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
         @BindView(R.id._thumbnailOption)
         lateinit var _thumbnailOption : ImageView
 
-        @Nullable
+        @JvmField
         @BindView(R.id._lastPlayedIcon)
-        lateinit var _LastPlayedIcon : ImageView
+        var _LastPlayedIcon : ImageView? = null
 
         constructor(view : View) : super(view)
         {
@@ -306,9 +311,12 @@ class DetailListItemAdapter : RecyclerView.Adapter<DetailListItemAdapter.ViewHol
 
         private fun initFont()
         {
+
             if(mIndexColor.equals("") == false)
             {
-                _ContentIndexText.setTypeface(Font.getInstance(mContext).getTypefaceMedium())
+                _ContentIndexText?.let {
+                    it.setTypeface(Font.getInstance(mContext).getTypefaceMedium())
+                }
             }
             _ContentTitleText.setTypeface(Font.getInstance(mContext).getTypefaceMedium())
         }
