@@ -243,7 +243,6 @@ interface ApiService
     companion object
     {
         const val CONNECTION_TIMEOUT: Long = 20000L
-
         fun create() : ApiService
         {
             val okHttpClient = OkHttpClient.Builder().apply {
