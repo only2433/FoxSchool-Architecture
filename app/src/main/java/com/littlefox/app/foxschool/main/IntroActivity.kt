@@ -365,7 +365,7 @@ class IntroActivity : BaseActivity()
     /**
      * 비밀번호 변경 다이얼로그 Listener
      */
-    val mPasswordChangeDialogListener : PasswordChangeListener = object : PasswordChangeListener
+    private val mPasswordChangeDialogListener : PasswordChangeListener = object : PasswordChangeListener
     {
         /**
          * [비밀번호 변경] 버튼 클릭 이벤트
