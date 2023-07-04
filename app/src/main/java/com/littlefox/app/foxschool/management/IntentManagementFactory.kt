@@ -27,6 +27,7 @@ import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.enumerate.ActivityMode
 import com.littlefox.app.foxschool.enumerate.AnimationMode
 import com.littlefox.app.foxschool.main.*
+import com.littlefox.app.foxschool.main.webview.WebviewFoxSchoolIntroduceActivity
 import com.littlefox.app.foxschool.observer.MainObserver
 import com.littlefox.logmonitor.Log
 
@@ -178,7 +179,7 @@ class IntentManagementFactory
         when(mode)
         {
             ActivityMode.INTRO -> intent = Intent(mContext, IntroActivity::class.java)
-
+            ActivityMode.WEBVIEW_FOXSCHOOL_INTRODUCE -> intent = Intent(mContext, WebviewFoxSchoolIntroduceActivity::class.java)
             ActivityMode.LOGIN ->
             {
                 intent = Intent(mContext, LoginActivity::class.java)

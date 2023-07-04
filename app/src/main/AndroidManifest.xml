@@ -80,6 +80,12 @@
             android:theme="@style/AppTheme_Default">
         </activity>
 
+        <activity android:name=".main.webview.WebviewFoxSchoolIntroduceActivity"
+            android:screenOrientation="sensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme_Default">
+        </activity>
+
         <service
             android:name=".fcm.LittlefoxFirebaseMessagingService"
             android:enabled="true"
