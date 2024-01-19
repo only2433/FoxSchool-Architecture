@@ -137,4 +137,5 @@
     <color name="color_29b8c6">#29b8c6</color>
     <color name="color_29c8e6_alpha_50">#8029c8e6</color>
     <color name="color_23cc8a_alpha_50">#8023cc8a</color>
+    <color name="color_ripple_black">#55000000</color>
 </resources>

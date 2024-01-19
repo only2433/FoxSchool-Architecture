@@ -125,7 +125,6 @@ class MainActivity() : BaseActivity()
     @BindView(R.id._menuItemLayout)
     lateinit var _MenuItemLayout : LinearLayout
 
-
     @BindView(R.id._menuLogoutLayout)
     lateinit var _MenuLogoutLayout : ScalableLayout
 

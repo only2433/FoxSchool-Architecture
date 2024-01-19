@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import com.littlefox.app.foxschool.R
 import com.littlefox.app.foxschool.`object`.data.bookshelf.ManagementBooksData
 import com.littlefox.app.foxschool.`object`.data.iac.AwakeItemData
 import com.littlefox.app.foxschool.`object`.result.login.LoginInformationResult
@@ -17,6 +18,9 @@ import com.littlefox.app.foxschool.main.viewmodel.api.MainApiViewModel
 import com.littlefox.app.foxschool.common.Common
 import com.littlefox.app.foxschool.common.CommonUtils
 import com.littlefox.app.foxschool.enumerate.*
+import com.littlefox.app.foxschool.fragment.MainMyBooksFragment
+import com.littlefox.app.foxschool.fragment.MainSongFragment
+import com.littlefox.app.foxschool.fragment.MainStoryFragment
 import com.littlefox.app.foxschool.fragment.MainTestFragment
 import com.littlefox.app.foxschool.iac.IACController
 import com.littlefox.app.foxschool.management.IntentManagementFactory
@@ -92,9 +96,9 @@ class MainFactoryViewModel @Inject constructor(private val apiViewModel : MainAp
         mLoginInformationResult = CommonUtils.getInstance(mContext).getPreferenceObject(Common.PARAMS_USER_API_INFORMATION, LoginInformationResult::class.java) as LoginInformationResult?
 
         mMainFragmentSelectionPagerAdapter = MainFragmentSelectionPagerAdapter((mContext as AppCompatActivity).getSupportFragmentManager())
-        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("동화"))
-        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("동요"))
-        mMainFragmentSelectionPagerAdapter.addFragment(MainTestFragment("책장/단어장"))
+        mMainFragmentSelectionPagerAdapter.addFragment(MainStoryFragment.instance)
+        mMainFragmentSelectionPagerAdapter.addFragment(MainSongFragment.instance)
+        mMainFragmentSelectionPagerAdapter.addFragment(MainMyBooksFragment.instance)
 
         mFragmentList = mMainFragmentSelectionPagerAdapter.pagerFragmentList
 
@@ -344,47 +348,57 @@ class MainFactoryViewModel @Inject constructor(private val apiViewModel : MainAp
     fun onClickStoryLevelsItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick StoryLevelsItem")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onClickStoryCategoriesItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick StoryCategoryItem")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     /** =============== [동요 Fragment] 이벤트 =============== */
     fun onClickSongCategoriesItem(seriesInformationResult : SeriesInformationResult, selectView : View)
     {
         Log.f("onClick SongCategoriesItem")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
+
     }
 
     /** =============== [책장 Fragment] 이벤트 =============== */
     fun onAddBookshelf()
     {
         Log.f("onAddBookshelf")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onAddVocabulary()
     {
         Log.f("onAddVocabulary")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onSettingBookshelf(index : Int)
     {
         Log.f("onSettingBookshelf : $index")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onSettingVocabulary(index : Int)
     {
         Log.f("onSettingVocabulary : $index")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onEnterBookshelfList(index : Int)
     {
         Log.f("onEnterBookshelfList : $index")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 
     fun onEnterVocabularyList(index : Int)
     {
         Log.f("onEnterVocabularyList : $index")
+        _toast.value = mContext.resources.getString(R.string.message_trial_version);
     }
 }
