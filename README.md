@@ -9,7 +9,7 @@
 교사는 숙제 검사와 점수 부여를 편리하게 처리할 수 있다.
 <br><br><br>
 # 🏗️ Architecture
-
+<br>
 ## Overview
 This app is developed using the **MVVM** architectural pattern with the following key components:
 
@@ -17,9 +17,8 @@ This app is developed using the **MVVM** architectural pattern with the followin
 - **View**: Managed by **Activity**
 - **ViewModel**: Split into **FactoryViewModel** and **ApiViewModel**
 - **Model**: Composed of **Data Class** and **Response Class**
-
+<br><br>
 ## 🔍 Detailed Architecture
-
 ### Factory ViewModel's Role
 - Acts as an intermediary between **View** and **ApiViewModel**
 - Directly implements event handling from the View
@@ -32,8 +31,8 @@ This app is developed using the **MVVM** architectural pattern with the followin
 3. **ApiViewModel** processes data through **Service** class
 4. **ApiViewModel** transfers data to **FactoryViewModel** via **StateFlow**
 5. **FactoryViewModel** handles the data and notifies the **View**
-
-## 🚀 Key Benefits
+<br><br>
+### 🚀 Key Benefits
 - Clear separation of View and business logic
 - Enhanced code reusability and maintainability
 - Real-time data reflection using **LiveData** and **StateFlow**
